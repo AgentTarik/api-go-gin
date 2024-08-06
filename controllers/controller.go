@@ -28,9 +28,7 @@ func CriaNovoAluno(c *gin.Context) {
 		return
 	}
 	database.DB.Create(&aluno)
-	c.JSON(http.StatusOK, gin.H{
-		"aluno": aluno,
-	})
+	c.JSON(http.StatusOK, aluno)
 }
 
 func BuscaAlunoPorID(c *gin.Context) {
@@ -78,7 +76,17 @@ func EditaAluno(c *gin.Context) {
 		return
 	}
 	database.DB.Model(&aluno).Updates(aluno)
-	c.JSON(http.StatusOK, gin.H{
-		"aluno": aluno,
-	})
+	c.JSON(http.StatusOK, aluno)
+}
+
+func BuscaAlunoPorCPF(c *gin.Context) {
+	var aluno models.Aluno
+	cpf := c.Param("cpf")
+	database.DB.Where(&models.Aluno{CPF: cpf}).First(&aluno)
+	if aluno.ID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Aluno not found",
+		})
+	}
+	c.JSON(http.StatusOK, aluno)
 }
