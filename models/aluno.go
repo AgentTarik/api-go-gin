@@ -1,7 +1,12 @@
 package models
 
+import "gorm.io/gorm"
+
 type Aluno struct {
+	gorm.Model
 	Nome string `json:"nome"`
 	CPF  string `json:"cpf"`
-	RD   string `json:"rg"`
+	RG   string `json:"rg"`
 }
+
+var Alunos []Aluno
